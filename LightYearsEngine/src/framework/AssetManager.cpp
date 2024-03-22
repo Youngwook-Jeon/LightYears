@@ -4,12 +4,11 @@ namespace ly
 {
     unique<AssetManager> AssetManager::assetManager{nullptr};
 
-    AssetManager::AssetManager()
+    AssetManager::AssetManager() : mRootDirectory{}
     {
-
     }
 
-    AssetManager& AssetManager::Get()
+    AssetManager &AssetManager::Get()
     {
         if (!assetManager)
         {
@@ -19,7 +18,7 @@ namespace ly
         return *assetManager;
     }
 
-    shared<sf::Texture> AssetManager::LoadTexture(const std::string& path)
+    shared<sf::Texture> AssetManager::LoadTexture(const std::string &path)
     {
         auto found = mLoadedTextureMap.find(path);
         if (found != mLoadedTextureMap.end())
@@ -28,16 +27,16 @@ namespace ly
         }
 
         shared<sf::Texture> newTexture{new sf::Texture};
-        if (newTexture->loadFromFile(path))
+        if (newTexture->loadFromFile(mRootDirectory + path))
         {
             mLoadedTextureMap.insert({path, newTexture});
             return newTexture;
         }
 
-        return shared<sf::Texture> {nullptr};
+        return shared<sf::Texture>{nullptr};
     }
 
-    void AssetManager::CleanCycle() 
+    void AssetManager::CleanCycle()
     {
         for (auto iter = mLoadedTextureMap.begin(); iter != mLoadedTextureMap.end();)
         {
@@ -51,5 +50,10 @@ namespace ly
                 ++iter;
             }
         }
+    }
+
+    void AssetManager::SetAssetRootDirectory(const std::string &directory)
+    {
+        mRootDirectory = directory;
     }
 }

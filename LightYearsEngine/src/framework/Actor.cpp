@@ -43,7 +43,6 @@ namespace ly
 
     void Actor::Tick(float deltaTime)
     {
-        LOG("Actor Ticking");
     }
 
     void Actor::SetTexture(const std::string &texturePath)
