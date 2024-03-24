@@ -1,4 +1,5 @@
 #include "player/PlayerSpaceship.h"
+#include "framework/MathUtility.h"
 #include "SFML/System.hpp"
 
 namespace ly
@@ -35,6 +36,38 @@ namespace ly
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         {
             mMoveInput.x = 1.f;
+        }
+
+        ClampInputOnEdge();
+        NormalizeInput();
+    }
+
+    void PlayerSpaceship::NormalizeInput()
+    {
+        Normalize(mMoveInput);
+    }
+
+    void PlayerSpaceship::ClampInputOnEdge()
+    {
+        sf::Vector2f actorLocation = GetActorLocation();
+        if (actorLocation.x < 0 && mMoveInput.x == -1.f)
+        {
+            mMoveInput.x = 0.f;
+        }
+
+        if (actorLocation.x > GetWindowSize().x && mMoveInput.x == 1.f)
+        {
+            mMoveInput.x = 0.f;
+        }
+
+        if (actorLocation.y < 0 && mMoveInput.y == -1.f)
+        {
+            mMoveInput.y = 0.f;
+        }
+
+        if (actorLocation.y > GetWindowSize().y && mMoveInput.y == 1.f)
+        {
+            mMoveInput.y = 0.f;
         }
     }
 

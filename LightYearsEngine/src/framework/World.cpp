@@ -1,16 +1,16 @@
 #include "framework/World.h"
 #include "framework/Core.h"
 #include "framework/Actor.h"
+#include "framework/Application.h"
 
 namespace ly
 {
-    World::World(Application* owningApp)
+    World::World(Application *owningApp)
         : mOwningApp{owningApp},
-        mBeganPlay{false},
-        mActors{},
-        mPendingActors{}
+          mBeganPlay{false},
+          mActors{},
+          mPendingActors{}
     {
-
     }
 
     void World::BeginPlayInternal()
@@ -47,9 +47,9 @@ namespace ly
         Tick(deltaTime);
     }
 
-    void World::Render(sf::RenderWindow& window)
+    void World::Render(sf::RenderWindow &window)
     {
-        for (auto& actor : mActors)
+        for (auto &actor : mActors)
         {
             actor->Render(window);
         }
@@ -57,16 +57,18 @@ namespace ly
 
     World::~World()
     {
+    }
 
+    sf::Vector2u World::GetWindowSize() const
+    {
+        return mOwningApp->GetWindowSize();
     }
 
     void World::BeginPlay()
     {
-
     }
 
     void World::Tick(float deltaTime)
     {
-
     }
 }
